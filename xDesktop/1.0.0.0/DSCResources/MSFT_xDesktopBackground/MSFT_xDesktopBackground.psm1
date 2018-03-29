@@ -79,7 +79,7 @@ function Test-TargetResource
             $DesktopKeyPath = (Join-Path -Path $UserHive.PSPath -ChildPath 'Control Panel\Desktop')
             if (Test-Path -Path $DesktopKeyPath) {
                  Write-Verbose -Message "Key: $DesktopKeyPath"
-                 $value=Get-ItemProperty -Path $DesktopKeyPath -Name 'WallPaper' 
+                 $value=Get-ItemProperty -Path $DesktopKeyPath -Name 'WallPaper' -ErrorAction SilentlyContinue
 
                  If ($Value.Wallpaper -eq $Path) {
                       $testResults += $true
@@ -92,8 +92,8 @@ function Test-TargetResource
                  switch ( $style )
                  {
                   'Stretch' {
-                              $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle'
-                              $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'
+                              $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle' -ErrorAction SilentlyContinue
+                              $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'  -ErrorAction SilentlyContinue
                               if (($value1.WallpaperStyle -eq '2') -and ($value2.TileWallpaper -eq '0')) {
                                 $testResults += $true
                               }
@@ -103,8 +103,8 @@ function Test-TargetResource
                               break
                             }
                   'Center'  {
-                              $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle'
-                              $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'
+                              $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle'  -ErrorAction SilentlyContinue
+                              $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'   -ErrorAction SilentlyContinue
                               if (($value1.WallpaperStyle -eq '1') -and ($value2.TileWallpaper -eq '0')) {
                                $testResults += $true
                               }
@@ -114,8 +114,8 @@ function Test-TargetResource
                               break
                             }
                   'Tile'    {
-                              $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle'
-                              $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'
+                              $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle'  -ErrorAction SilentlyContinue
+                              $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'   -ErrorAction SilentlyContinue
                               if (($value1.WallpaperStyle -eq '1') -and ($value2.TileWallpaper -eq '1')) {
                                 $testResults += $true
                               }
