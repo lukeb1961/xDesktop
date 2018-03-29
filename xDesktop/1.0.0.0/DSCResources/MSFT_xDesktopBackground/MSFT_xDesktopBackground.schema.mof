@@ -1,0 +1,8 @@
+[ClassVersion("1.0.0.0"), FriendlyName("xDesktopBackground")]
+
+class MSFT_xDesktopBackground : OMI_BaseResource
+{
+    [Key, Description("File to apply as Desktop Background")] String Path;
+    [Write, Description("Style to deploy bmp on desktop"), ValueMap{"Tile","Center","Stretch","NoChange"}, Values{"Tile","Center","Stretch","NoChange"}] String Style;
+    [Write, Description("Whether the Bitmap file should exist"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};
