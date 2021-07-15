@@ -1,16 +1,14 @@
-Import-Module $PSScriptRoot\..\Helper.psm1 -Verbose:$false
+Import-Module -Name $PSScriptRoot\..\Helper.psm1 -Verbose:$false
 
 function Get-TargetResource
 {
     [CmdletBinding()]
-    [OutputType([System.Collections.Hashtable])]
+    [OutputType([hashtable])]
     param
     (
-        [ValidateSet('Present','Absent')]
-        [System.String] $Ensure,
-        [Parameter(Mandatory)]
-        [System.String] $Path,
-        [System.String] $Text,
+        [Parameter(Mandatory=$true)][ValidateSet('Present','Absent')][string] $Ensure,
+        [Parameter(Mandatory=$true)][string] $Path,
+        [string] $Text,
         [uint32] $FontSize,
         [uint32] $Height,
         [uint32] $Width,
@@ -22,15 +20,15 @@ function Get-TargetResource
 
     if (Test-Path -Path $Path) {
         $returnValue.Path=$path  
-        $returnValue.Ensure = "Present"
-        write-verbose "get the bitmap size of $path"
+        $returnValue.Ensure = 'Present'
+        write-verbose -Message "get the bitmap size of $path"
         $image=[System.Drawing.Image]::FromFile($path)
         $returnValue.Width = $image.Width
         $returnValue.Height = $image.Height
     }
     else {
         $returnValue.Path=$path  
-        $returnValue.Ensure="Absent"
+        $returnValue.Ensure='Absent'
     }
     
     $returnValue 
@@ -41,14 +39,12 @@ function Get-TargetResource
 function Set-TargetResource
 {
     [CmdletBinding()]
-    [OutputType([System.Boolean])]
+    [OutputType([bool])]
     param
     (
-        [ValidateSet('Present','Absent')]
-        [System.String] $Ensure,
-        [Parameter(Mandatory)]
-        [System.String] $Path,
-        [System.String] $Text,
+        [Parameter(Mandatory=$true)][ValidateSet('Present','Absent')] [string] $Ensure,
+        [Parameter(Mandatory=$true)][string] $Path,
+        [string] $Text,
         [uint32] $FontSize,
         [uint32] $Height,
         [uint32] $Width,
@@ -60,8 +56,8 @@ function Set-TargetResource
 
     if ($Ensure -eq 'Present')
     {
-      Write-Verbose "Creating bitmap file $path to ensure it is Present."
-      Write-Verbose "Containing text $Text on the bitmap."
+      Write-Verbose -Message "Creating bitmap file $path to ensure it is Present."
+      Write-Verbose -Message "Containing text $Text on the bitmap."
       if (New-xDesktopBMPfileWithText @PSBoundParameters) {
         $isCompliant=$true
       }
@@ -70,7 +66,7 @@ function Set-TargetResource
       } 
     }
     else {
-        Write-Verbose "Removing bitmap file $path to ensure it is Absent"
+        Write-Verbose -Message "Removing bitmap file $path to ensure it is Absent"
         Remove-Item -Path $path -Force
         $isCompliant=$true
     }
@@ -81,14 +77,12 @@ function Set-TargetResource
 function Test-TargetResource
 {
     [CmdletBinding()]
-    [OutputType([System.Boolean])]
+    [OutputType([bool])]
     param
     (
-        [ValidateSet('Present','Absent')]
-        [System.String] $Ensure,
-        [Parameter(Mandatory)]
-        [System.String] $Path,
-        [System.String] $Text,
+        [Parameter(Mandatory=$true)][ValidateSet('Present','Absent')] [string] $Ensure,
+        [Parameter(Mandatory=$true)][string] $Path,
+        [string] $Text,
         [uint32] $FontSize,
         [uint32] $Height,
         [uint32] $Width,
@@ -99,13 +93,13 @@ function Test-TargetResource
     
     $BMPfile = Get-TargetResource -Path $Path -ErrorAction SilentlyContinue -ErrorVariable ev
 
-    if ($Ensure -ne "Absent")                    # Present
+    if ($Ensure -ne 'Absent')                    # Present
     {
-        if ($BMPfile.Ensure -eq "Absent")
+        if ($BMPfile.Ensure -eq 'Absent')
         {
             $testResult = $false
         }
-        elseif ($BMPfile.Ensure -eq "Present")
+        elseif ($BMPfile.Ensure -eq 'Present')
         {
             $testResult = $true
             if ($PSboundparameters.Height) {
@@ -123,7 +117,7 @@ function Test-TargetResource
         }
     }
     else {                                     # Absent
-        if ($BMPfile.Ensure -eq "Absent")
+        if ($BMPfile.Ensure -eq 'Absent')
         {
             $testResult = $true
         }

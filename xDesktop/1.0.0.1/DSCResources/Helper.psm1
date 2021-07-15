@@ -1,7 +1,7 @@
 Function New-xDesktopBMPfileWithText {
     [cmdletbinding(PositionalBinding=$false)]
-    PARAM ([string] $ensure,
-           [Parameter(Mandatory=$true)] [string] $path,
+    PARAM ([Parameter(Mandatory=$true)]  [string] $ensure,
+           [Parameter(Mandatory=$true)]  [string] $path,
            [Parameter(Mandatory=$false)] [string] $text=$ENV:COMPUTERNAME,
            [Parameter(Mandatory=$true)] 
            [ValidateSet('AliceBlue','AntiqueWhite','Aqua','Aquamarine','Azure','Beige','Bisque','Black','BlanchedAlmond','Blue','BlueViolet','Brown','BurlyWood','CadetBlue','Chartreuse','Chocolate','Coral','CornflowerBlue','Cornsilk','Crimson','Cyan','DarkBlue','DarkCyan','DarkGoldenrod','DarkGray','DarkGreen','DarkKhaki','DarkMagenta','DarkOliveGreen','DarkOrange','DarkOrchid','DarkRed','DarkSalmon','DarkSeaGreen','DarkSlateBlue','DarkSlateGray','DarkTurquoise','DarkViolet','DeepPink','DeepSkyBlue','DimGray','DodgerBlue','Firebrick','FloralWhite','ForestGreen','Fuchsia','G','Gainsboro','GhostWhite','Gold','Goldenrod','Gray','Green','GreenYellow','Honeydew','HotPink','IndianRed','Indigo','IsEmpty','IsKnownColor','IsNamedColor','IsSystemColor','Ivory','Khaki','Lavender','LavenderBlush','LawnGreen','LemonChiffon','LightBlue','LightCoral','LightCyan','LightGoldenrodYellow','LightGray','LightGreen','LightPink','LightSalmon','LightSeaGreen','LightSkyBlue','LightSlateGray','LightSteelBlue','LightYellow','Lime','LimeGreen','Linen','Magenta','Maroon','MediumAquamarine','MediumBlue','MediumOrchid','MediumPurple','MediumSeaGreen','MediumSlateBlue','MediumSpringGreen','MediumTurquoise','MediumVioletRed','MidnightBlue','MintCream','MistyRose','Moccasin','Name','NavajoWhite','Navy','OldLace','Olive','OliveDrab','Orange','OrangeRed','Orchid','PaleGoldenrod','PaleGreen','PaleTurquoise','PaleVioletRed','PapayaWhip','PeachPuff','Peru','Pink','Plum','PowderBlue','Purple','R','Red','RosyBrown','RoyalBlue','SaddleBrown','Salmon','SandyBrown','SeaGreen','SeaShell','Sienna','Silver','SkyBlue','SlateBlue','SlateGray','Snow','SpringGreen','SteelBlue','Tan','Teal','Thistle','Tomato','Transparent','Turquoise','Violet','Wheat','White','WhiteSmoke','Yellow','YellowGreen')]
@@ -21,13 +21,13 @@ Function New-xDesktopBMPfileWithText {
     $bmp  = new-object -TypeName System.Drawing.Bitmap  -Argumentlist ($Width, $Height)
     $font = new-object -TypeName System.Drawing.Font    -Argumentlist ('Consolas',$fontSize)
   
-    $bgBrushColour=[system.drawing.color]::FromName($bgcolour)
-    $fgBrushColour=[system.drawing.color]::FromName($fgcolour)
+    $bgBrushColour=[drawing.color]::FromName($bgcolour)
+    $fgBrushColour=[drawing.color]::FromName($fgcolour)
     
     $bg = New-Object -TypeName Drawing.SolidBrush -ArgumentList ($bgBrushColour)
     $fg = New-Object -TypeName Drawing.SolidBrush -ArgumentList ($fgBrushColour)
   
-    $graphics = [System.Drawing.Graphics]::FromImage($bmp) 
+    $graphics = [Drawing.Graphics]::FromImage($bmp) 
     $x=$y=0
     $graphics.FillRectangle($bg,$x,$y,$bmp.Width,$bmp.Height) 
     $x=$y=10
@@ -43,11 +43,12 @@ Function New-xDesktopBMPfileWithText {
   
 function Set-xDesktopBackgroundWindowsWallpaper {
   [CmdletBinding()] 
-  PARAM([string] $ensure,
+  PARAM([Parameter(Mandatory=$true)] [string] $ensure,
         [Parameter(Mandatory=$true)] [string] $Path,
-        [ValidateSet('Tile','Center','Stretch','NoChange','Fill')]  [string] $style
+        [Parameter(Mandatory=$true)] [ValidateSet('Tile','Center','Stretch','NoChange','Fill')]  [string] $style
        )
 
+<#
   Switch ($Style) {
     'Tile'     {$IntStyle=0}
     'Center'   {$IntStyle=1}
@@ -55,6 +56,7 @@ function Set-xDesktopBackgroundWindowsWallpaper {
     'NoChange' {$IntStyle=3}
     'Fill'     {$IntStyle=4}
   }
+  #>
 
 
    foreach($UserHive in Get-ChildItem -Path Registry::HKEY_USERS) {

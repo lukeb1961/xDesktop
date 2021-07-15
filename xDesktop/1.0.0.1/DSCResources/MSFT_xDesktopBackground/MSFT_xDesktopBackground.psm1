@@ -61,12 +61,12 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [Parameter(Mandatory)]   [ValidateSet('Present','Absent')]  [System.String] $Ensure,
-        [Parameter(Mandatory)]   [System.String] $path,
-        [ValidateSet('Tile','Center','Stretch','NoChange','Fill')] [System.String] $style
+        [Parameter(Mandatory=$true)]   [ValidateSet('Present','Absent')]  [System.String] $Ensure,
+        [Parameter(Mandatory=$true)]   [System.String] $path,
+        [Parameter(Mandatory=$true)]   [ValidateSet('Tile','Center','Stretch','NoChange','Fill')] [System.String] $style
     )
     
-      
+<#      
         Switch ($Style) {
           'Tile'     {$IntStyle=0}
           'Center'   {$IntStyle=1}
@@ -74,7 +74,7 @@ function Test-TargetResource
           'NoChange' {$IntStyle=3}
           'Fill'     {$IntStyle=4}
         }
-      
+#>
          $testResults=@()
          foreach($UserHive in Get-ChildItem -Path Registry::HKEY_USERS -EA SilentlyContinue) {
             $DesktopKeyPath = (Join-Path -Path $UserHive.PSPath -ChildPath 'Control Panel\Desktop')
