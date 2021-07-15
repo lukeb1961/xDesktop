@@ -8,7 +8,7 @@ function Get-TargetResource
     (
         [Parameter(Mandatory)]   [ValidateSet('Present','Absent')]  [System.String] $Ensure,
         [Parameter(Mandatory)]   [System.String] $path,
-        [ValidateSet('Tile','Center','Stretch','NoChange')] [System.String] $style
+        [ValidateSet('Tile','Center','Stretch','NoChange','Fill')] [System.String] $style
     )
 
     $returnValue = @{}
@@ -37,7 +37,7 @@ function Set-TargetResource
     (
         [Parameter(Mandatory)]   [ValidateSet('Present','Absent')]  [System.String] $Ensure,
         [Parameter(Mandatory)]   [System.String] $path,
-        [ValidateSet('Tile','Center','Stretch','NoChange')] [System.String] $style
+        [ValidateSet('Tile','Center','Stretch','NoChange','Fill')] [System.String] $style
     )
 
     if ($Ensure -eq 'Present')
@@ -63,7 +63,7 @@ function Test-TargetResource
     (
         [Parameter(Mandatory)]   [ValidateSet('Present','Absent')]  [System.String] $Ensure,
         [Parameter(Mandatory)]   [System.String] $path,
-        [ValidateSet('Tile','Center','Stretch','NoChange')] [System.String] $style
+        [ValidateSet('Tile','Center','Stretch','NoChange','Fill')] [System.String] $style
     )
     
       
@@ -72,6 +72,7 @@ function Test-TargetResource
           'Center'   {$IntStyle=1}
           'Stretch'  {$IntStyle=2}
           'NoChange' {$IntStyle=3}
+          'Fill'     {$IntStyle=4}
         }
       
          $testResults=@()
@@ -123,6 +124,17 @@ function Test-TargetResource
                                 $testResults += $false
                               }
                               break
+                            }
+                  'Fill'    {
+                              $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle'  -ErrorAction SilentlyContinue
+                              $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'   -ErrorAction SilentlyContinue
+                              if (($value1.WallpaperStyle -eq '10') -and ($value2.TileWallpaper -eq '0')) {
+                                $testResults += $true
+                            }
+                            else {
+                              $testResults += $false
+                            }
+                            break
                             }
                    'NoChange' {
                                 $testResults += $true
