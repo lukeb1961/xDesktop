@@ -6,9 +6,9 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [Parameter(Mandatory)]   [ValidateSet('Present','Absent')]  [System.String] $Ensure,
-        [Parameter(Mandatory)]   [System.String] $path,
-        [ValidateSet('Tile','Center','Stretch','NoChange','Fill')] [System.String] $style
+        [Parameter(Mandatory)] [ValidateSet('Present','Absent')]  [System.String] $Ensure,
+        [Parameter(Mandatory)] [System.String] $path,
+        [ValidateSet('Tile','Center','Stretch','NoChange','Fill','Span')] [System.String] $style
     )
 
     $returnValue = @{}
@@ -37,7 +37,7 @@ function Set-TargetResource
     (
         [Parameter(Mandatory)]   [ValidateSet('Present','Absent')]  [System.String] $Ensure,
         [Parameter(Mandatory)]   [System.String] $path,
-        [ValidateSet('Tile','Center','Stretch','NoChange','Fill')] [System.String] $style
+        [ValidateSet('Tile','Center','Stretch','NoChange','Fill','Span')] [System.String] $style
     )
 
     if ($Ensure -eq 'Present')
@@ -63,7 +63,7 @@ function Test-TargetResource
     (
         [Parameter(Mandatory=$true)]   [ValidateSet('Present','Absent')]  [System.String] $Ensure,
         [Parameter(Mandatory=$true)]   [System.String] $path,
-        [Parameter(Mandatory=$true)]   [ValidateSet('Tile','Center','Stretch','NoChange','Fill')] [System.String] $style
+        [Parameter(Mandatory=$true)]   [ValidateSet('Tile','Center','Stretch','NoChange','Fill','Span')] [System.String] $style
     )
     
 <#      
@@ -129,6 +129,17 @@ function Test-TargetResource
                               $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle'  -ErrorAction SilentlyContinue
                               $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'   -ErrorAction SilentlyContinue
                               if (($value1.WallpaperStyle -eq '10') -and ($value2.TileWallpaper -eq '0')) {
+                                $testResults += $true
+                            }
+                            else {
+                              $testResults += $false
+                            }
+                            break
+                            }
+                  'Span'    {
+                              $value1=get-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle'  -ErrorAction SilentlyContinue
+                              $value2=get-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'   -ErrorAction SilentlyContinue
+                              if (($value1.WallpaperStyle -eq '22') -and ($value2.TileWallpaper -eq '0')) {
                                 $testResults += $true
                             }
                             else {

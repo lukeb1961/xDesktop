@@ -45,7 +45,7 @@ function Set-xDesktopBackgroundWindowsWallpaper {
   [CmdletBinding()] 
   PARAM([Parameter(Mandatory=$true)] [string] $ensure,
         [Parameter(Mandatory=$true)] [string] $Path,
-        [Parameter(Mandatory=$true)] [ValidateSet('Tile','Center','Stretch','NoChange','Fill')]  [string] $style
+        [Parameter(Mandatory=$true)] [ValidateSet('Tile','Center','Stretch','NoChange','Fill','Span')]  [string] $style
        )
 
 <#
@@ -86,6 +86,11 @@ function Set-xDesktopBackgroundWindowsWallpaper {
                       Set-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'  -Value '0'  -Force
                       break
              }
+             'Span'   {
+                       Set-ItemProperty -Path $DesktopKeyPath -Name 'WallpaperStyle' -Value '22' -Force
+                       Set-ItemProperty -Path $DesktopKeyPath -Name 'TileWallpaper'  -Value '0'  -Force
+                       break
+              }
              'NoChange' {  break  }
            }
         }
