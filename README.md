@@ -1,5 +1,5 @@
 # xDesktop
-DSC to set desktop default wallpaper bitmap
+DSC to set Windows desktop default wallpaper bitmap
 
 
 xDesktopBMPfile 
